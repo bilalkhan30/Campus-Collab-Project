@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import pool from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import projectRoutes from './routes/projectRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -12,21 +13,18 @@ const app = express();
 // Allow our frontend to reuqest our backend
 app.use(cors());
 
-// Telling express to automatically parse the JSON data in request body
+// Parse incoming JSON payloads (e.g., from fetch, Axios, or Postman)
 app.use(express.json());
 
-app.get("/api/health", async (req, res) => {
-    try {
-        const dbResult = await pool.query("SELECT NOW()");
+// Parse incoming URL-encoded form data (e.g., standard HTML forms)
+app.use(express.urlencoded({ extended: true }));
 
-        res.sendStatus(200);
-        
-    } catch(error) {
-        console.log(error);
-    }
+// Authourizing the user before they make any request
+app.use("/api/auth", authRoutes);
 
-    
-});
+// Route for handling projects
+app.use('/api/projects', projectRoutes);
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}.`);

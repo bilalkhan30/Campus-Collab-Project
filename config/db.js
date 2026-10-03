@@ -16,7 +16,7 @@ const pool = new Pool({
 });
 
 // A quick eventlistener to let us know that database connected
-pool.on('connet', () => {
+pool.on('connect', () => {
     console.log("connected to PostgreSQL.");
 });
 
