@@ -45,6 +45,14 @@ app.use(express.static('public'));
 app.use('/api/feedback', feedbackRoutes);
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}.`);
-});
+// --- VERCEL DEPLOYMENT ---
+// Only listen to the port if we are running locally. 
+// In production, Vercel takes over and requires us to export the app.
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server is listening on port ${PORT}.`);
+    });
+}
+
+export default app;

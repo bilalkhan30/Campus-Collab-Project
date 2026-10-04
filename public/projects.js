@@ -4,6 +4,18 @@ let allProjects = []; // Master list to hold data so we don't spam the server
 
 document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('token');
+  // Add this near the top of projects.js
+  const userRole = localStorage.getItem('role');
+  if (userRole === 'admin') {
+    // Hide the standard user links
+    document.getElementById('navNewProject').style.display = 'none';
+    document.getElementById('navProfile').style.display = 'none';
+
+    // Show the Admin Panel button
+    document.getElementById('adminNavSpot').innerHTML = `
+      <a href="admin.html" class="btn" style="background: #dc2626; color: white; margin-right: 1rem; border: none;">Admin Panel</a>
+    `;
+  }
   if (!token) {
     window.location.href = '/login.html';
     return;
@@ -66,6 +78,9 @@ function renderProjects(projectsToRender) {
   const container = document.getElementById('projectsContainer');
   container.innerHTML = ''; // Clear the current view
 
+  // ADD THIS LINE HERE: Grab the role right before we render!
+  const currentRole = localStorage.getItem('role'); 
+
   if (projectsToRender.length === 0) {
     container.innerHTML = '<p>No projects found matching your search criteria.</p>';
     return;
@@ -81,17 +96,21 @@ function renderProjects(projectsToRender) {
     ).join('');
 
     card.innerHTML = `
-      <h3>${project.title}</h3>
+      <h3 style="margin-top: 0;">${project.title}</h3>
       <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
-        By: <strong>${project.author_name}</strong> 
+        By: <strong style="cursor: pointer; color: var(--primary); text-decoration: underline;" onclick="viewAuthorProfile(${project.author_id})">${project.author_name}</strong> 
         <span style="float: right;">📍 ${project.author_city || 'Remote'}</span>
       </p>
       <p>${project.description}</p>
       <p><strong>Members Needed:</strong> ${project.members_required}</p>
-      <div style="margin-top: 10px; margin-bottom: 15px;">${skillsHtml}</div>
-      <button onclick="applyToProject(${project.id})">Apply to Join</button>
+      
+      <p style="margin-bottom: 5px; font-size: 0.9rem;"><strong>Skills Required:</strong></p>
+      <div style="margin-bottom: 15px;">${skillsHtml}</div>
+      
+      <!-- Check the newly defined currentRole variable here -->
+      ${currentRole !== 'admin' ? `<button onclick="applyToProject(${project.id})" style="margin-top: auto; width: 100%;">Apply to Join</button>` : '<em style="display: block; text-align: center; color: #64748b; margin-top: auto; padding: 0.5rem; font-size: 0.9rem;">Admin Viewing Mode</em>'}
     `;
-    
+
     container.appendChild(card);
   });
 }
@@ -131,3 +150,64 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
   localStorage.removeItem('token');
   window.location.href = '/login.html';
 });
+
+// Add to bottom of public/projects.js
+
+window.viewAuthorProfile = async (authorId) => {
+  const modal = document.getElementById('profileModal');
+  const content = document.getElementById('modalProfileContent');
+  
+  // Show the modal with a loading state
+  modal.style.display = 'flex';
+  content.innerHTML = '<p style="text-align: center; color: #64748b;">Fetching profile...</p>';
+
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`/api/users/${authorId}/public`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (response.ok) {
+      const user = await response.json();
+      const picUrl = user.profile_pic || 'https://via.placeholder.com/150';
+      
+      // Inject the author's data into the modal
+      content.innerHTML = `
+        <div style="text-align: center;">
+          <img src="${picUrl}" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-color); margin-bottom: 1rem;">
+          <h2 style="margin: 0; color: var(--text-main);">${user.name}</h2>
+          
+          <p style="color: #64748b; margin-top: 5px; margin-bottom: 5px; font-size: 0.9rem;">
+            📍 ${user.city || 'Unknown'} | 📞 ${user.contact || 'No contact provided'}
+          </p>
+          
+          <p style="margin-top: 0; margin-bottom: 15px; font-size: 0.95rem;">
+            ✉️ <a href="mailto:${user.email}" style="color: var(--primary); text-decoration: underline;">${user.email}</a>
+          </p>
+
+          <div style="background: var(--bg-color); padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: left;">
+            <p style="margin: 0; font-size: 0.95rem;">${user.bio || 'This user has not written a bio yet.'}</p>
+          </div>
+          
+          ${user.resume ? `<a href="${user.resume}" target="_blank" class="btn btn-outline" style="width: 100%; display: block; box-sizing: border-box;">📄 View Full Resume</a>` : '<p style="color: #64748b; font-size: 0.9rem;">No resume uploaded.</p>'}
+        </div>
+      `;
+    } else {
+      content.innerHTML = '<p style="color: red; text-align: center;">Failed to load profile.</p>';
+    }
+  } catch (error) {
+    content.innerHTML = '<p style="color: red; text-align: center;">Network error occurred.</p>';
+  }
+};
+
+window.closeProfileModal = () => {
+  document.getElementById('profileModal').style.display = 'none';
+};
+
+// Also close the modal if the user clicks the dark background outside the white box
+window.onclick = (event) => {
+  const modal = document.getElementById('profileModal');
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+};

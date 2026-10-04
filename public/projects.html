@@ -10,14 +10,36 @@
 
 <body>
     <header>
-        <h1>CampusCollab Feed</h1>
+        <!-- Logo and Title Container -->
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="logo.png" alt="CampusCollab Logo" style="height: 35px; width: auto;">
+            <h1 style="margin: 0;">
+                <a href="index.html" style="text-decoration: none; color: var(--primary);">CampusCollab</a>
+            </h1>
+        </div>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
         <nav>
-            <!-- We will build these views next -->
-            <a href="create-project.html">+ New Project</a>
-            <a href="profile.html">Profile</a>
+            <span id="adminNavSpot"></span>
+            <a href="create-project.html" id="navNewProject">+ New Project</a>
+            <a href="profile.html" id="navProfile">Profile</a>
             <button id="logoutBtn">Logout</button>
         </nav>
+        <script>
+            function toggleMobileMenu() {
+                document.querySelector('header nav').classList.toggle('active');
+            }
+        </script>
     </header>
+    
+    <!-- PROFILE MODAL POPUP -->
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <div id="modalProfileContent">
+                <!-- JS will inject the profile card here -->
+            </div>
+        </div>
+    </div>
 
     <!-- public/projects.html -->
     <main>
@@ -25,7 +47,7 @@
     
         <!-- FILTER DASHBOARD -->
         <div
-            style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            style="padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
             <div style="flex: 1; min-width: 200px;">
                 <label for="filterCity" style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Filter by City</label>
                 <input type="text" id="filterCity" placeholder="e.g., London, Austin..."

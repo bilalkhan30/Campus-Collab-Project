@@ -10,6 +10,19 @@ export const submitFeedback = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
+    // Check if this specific email submitted feedback in the last 24 hours
+    const recentFeedback = await pool.query(
+      `SELECT * FROM feedbacks 
+       WHERE email = $1 
+       AND created_at >= NOW() - INTERVAL '1 day'`,
+      [email]
+    );
+
+    if (recentFeedback.rows.length > 0) {
+      // 429 is the HTTP status code for "Too Many Requests"
+      return res.status(429).json({ message: 'You have already submitted feedback recently. Please try again tomorrow.' });
+    }
+
     await pool.query(
       'INSERT INTO feedbacks (name, email, message) VALUES ($1, $2, $3)',
       [name, email, message]

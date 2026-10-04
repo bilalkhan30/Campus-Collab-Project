@@ -4,7 +4,7 @@ import { createProject, getProjects, updateProject, deleteProject } from '../con
 
 const router = express.Router();
 // GET /api/projects - Public route, anyone can view open projects
-router.get('/', getProjects);
+router.get('/',verifyToken, getProjects);
 // POST /api/projects - Protected route, only logged-in users can create
 router.post('/', verifyToken, createProject);
 // PUT /api/projects - logged in users can udpate the info on uploaded porjects

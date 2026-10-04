@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusCollab | Find Your Team</title>
     <link rel="stylesheet" href="style.css">
-    <style>
+    <!-- <style>
         /* Specific styles for the landing page */
         .hero {
             background: var(--primary);
@@ -73,15 +73,26 @@
             padding: 10px;
             cursor: pointer;
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
     <header>
-        <h1>CampusCollab</h1>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="logo.png" alt="CampusCollab Logo" style="height: 35px; width: auto;">
+            <h1 style="margin: 0;">
+                <a href="index.html" style="text-decoration: none; color: var(--primary);">CampusCollab</a>
+            </h1>
+        </div>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
         <nav id="navMenu">
             <!-- JavaScript will inject Login/Register or Profile/Logout buttons here based on auth state -->
         </nav>
+        <script>
+            function toggleMobileMenu() {
+                document.querySelector('header nav').classList.toggle('active');
+            }
+        </script>
     </header>
 
     <section class="hero">
@@ -106,7 +117,7 @@
             <textarea id="fb_message" rows="4" placeholder="Your suggestions or issues..." required></textarea>
             <button type="submit">Submit Feedback</button>
         </form>
-        <p id="fb_status" style="text-align: center; margin-top: 10px;"></p>
+        <p id="fb_status" style="text-align: center; margin-top: 10px;">@Bilal Khan All Rights Reserved</p>
     </footer>
 
     <script src="index.js"></script>

@@ -93,3 +93,25 @@ export const getUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error loading profile' });
   }
 };
+// Add to the bottom of controllers/userController.js
+
+export const getPublicProfile = async (req, res) => {
+  try {
+    const requestedUserId = req.params.id;
+    
+    // Fetch safe public data
+    const userResult = await pool.query(
+      'SELECT id, name, email, city, contact, bio, profile_pic, resume FROM users WHERE id = $1',
+      [requestedUserId]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(userResult.rows[0]);
+  } catch (error) {
+    console.error('Error fetching public profile:', error);
+    res.status(500).json({ message: 'Server error loading profile' });
+  }
+};

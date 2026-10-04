@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | CampusCollab</title>
     <link rel="stylesheet" href="style.css">
-    <style>
+    <!-- <style>
         /* Admin specific table styles */
         table {
             width: 100%;
@@ -40,16 +40,27 @@
             margin-bottom: 4rem;
             overflow-x: auto;
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
     <header> <!-- Darker header for admin mode -->
-        <h1>Admin Control Panel</h1>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="logo.png" alt="CampusCollab Logo" style="height: 35px; width: auto;">
+            <h1 style="margin: 0;">
+                <a href="index.html" style="text-decoration: none; color: var(--primary);">CampusCollab</a>
+            </h1>
+        </div>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
         <nav>
             <a href="projects.html">Exit to Feed</a>
             <button id="logoutBtn">Logout</button>
         </nav>
+        <script>
+            function toggleMobileMenu() {
+                document.querySelector('header nav').classList.toggle('active');
+            }
+        </script>
     </header>
 
     <main style="max-width: 1400px;">
@@ -89,6 +100,15 @@
                     <!-- JS will populate rows here -->
                 </tbody>
             </table>
+        </div>
+        <!-- PROFILE MODAL POPUP -->
+        <div id="profileModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+                <div id="modalProfileContent">
+                    <!-- JS will inject the profile card here -->
+                </div>
+            </div>
         </div>
     </main>
 

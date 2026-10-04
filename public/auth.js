@@ -68,9 +68,16 @@ if (loginForm) {
       const data = await response.json();
 
       if (response.ok) {
-        // Save the token and redirect to the protected feed
+        // Save the token and the user's role to local storage
         localStorage.setItem('token', data.token);
-        window.location.href = '/projects.html';
+        localStorage.setItem('role', data.user.role); 
+
+        // SMART REDIRECT: Check the role and route accordingly
+        if (data.user.role === 'admin') {
+          window.location.href = '/admin.html';
+        } else {
+          window.location.href = '/projects.html';
+        }
       } else {
         errorMessage.textContent = data.message;
       }

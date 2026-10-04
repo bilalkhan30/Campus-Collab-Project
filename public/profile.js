@@ -56,14 +56,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Render Created Projects
         const projContainer = document.getElementById('myProjectsContainer');
         if (data.authoredProjects.length === 0) {
-            projContainer.innerHTML = '<p>You have not created any projects yet.</p>';
+          projContainer.innerHTML = '<p>You have not created any projects yet.</p>';
         } else {
-            projContainer.innerHTML = data.authoredProjects.map(proj => `
-            <div style="border-bottom: 1px solid #eee; padding: 10px 0;">
-                <strong>${proj.title}</strong> (${proj.members_required} slots left)
-                <span style="float:right;">Status: ${proj.status}</span>
+          projContainer.innerHTML = data.authoredProjects.map(proj => `
+            <div style="border-bottom: 1px solid #e2e8f0; padding: 15px 0; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h4 style="margin: 0 0 5px 0; color: var(--text-main);">${proj.title}</h4>
+                <span style="font-size: 0.9rem; color: #64748b;">
+                  ${proj.members_required} slots left | Status: <strong style="color: ${proj.status === 'open' ? '#16a34a' : '#dc2626'}">${proj.status.toUpperCase()}</strong>
+                </span>
+              </div>
+              <button onclick="deleteMyProject(${proj.id})" class="btn btn-outline" style="color: #dc2626; border-color: #dc2626; padding: 5px 15px; font-size: 0.85rem;">Delete</button>
             </div>
-            `).join('');
+          `).join('');
         }
 
         // --- NEW: Render Received Applications ---
@@ -180,5 +185,33 @@ window.respondToApp = async (applicationId, status) => {
   } catch (error) {
     console.error('Error responding to application:', error);
     alert('Failed to process the request. Please try again.');
+  }
+};
+
+// --- 4. DELETE PROJECT LOGIC ---
+window.deleteMyProject = async (projectId) => {
+  // Confirm before deleting, as it will also wipe out all applications to this project
+  if (!confirm('Are you sure you want to permanently delete this project? All applications will be lost.')) return;
+
+  const token = localStorage.getItem('token');
+  
+  try {
+    const response = await fetch(`/api/projects/${projectId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      alert('Project deleted successfully.');
+      window.location.reload(); // Refresh the page to remove the project from the list
+    } else {
+      const data = await response.json();
+      alert(`Error: ${data.message}`);
+    }
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    alert('Failed to connect to the server. Please try again.');
   }
 };

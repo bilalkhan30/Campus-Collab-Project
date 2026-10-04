@@ -28,20 +28,24 @@ export const createProject = async (req, res) => {
 // Fetching all open to apply projects for home feed
 export const getProjects = async (req, res) => {
   try {
+    // 1. Grab the ID of the logged-in user (provided by verifyToken)
+    const userId = req.user.userId;
 
+    // 2. Add 'AND p.author_id != $1' to the WHERE clause to exclude their projects
     const projects = await pool.query(`
       SELECT 
-        p.id, p.title, p.description, p.members_required, p.skills, p.status, p.created_at,
+        p.id, p.author_id, p.title, p.description, p.members_required, p.skills, p.status, p.created_at,
         u.name AS author_name, u.profile_pic AS author_pic, u.city AS author_city
       FROM projects p
       JOIN users u ON p.author_id = u.id
-      WHERE p.status = 'open'
+      WHERE p.status = 'open' AND p.author_id != $1
       ORDER BY p.created_at DESC
-    `);
+    `, [userId]);
+
     res.status(200).json(projects.rows);
   } catch (error) {
     console.error('Error fetching projects:', error);
-    res.status(500).json({ message: 'Server error while fetching projects' });
+    res.status(500).json({ message: 'Server error fetching projects' });
   }
 };
 // Updating  project details

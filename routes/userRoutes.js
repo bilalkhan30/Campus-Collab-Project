@@ -1,5 +1,5 @@
 import express from 'express';
-import { updateProfile, getUserProfile } from '../controllers/userController.js';
+import { updateProfile, getUserProfile, getPublicProfile } from '../controllers/userController.js';
 import { verifyToken } from '../middleware/authMiddleware.js';
 import { upload } from '../config/cloudinary.js';
 
@@ -18,5 +18,8 @@ router.put(
 
 // Fectching user profile
 router.get('/profile', verifyToken, getUserProfile);
+
+// Route for fetching user profile for other viewers
+router.get('/:id/public', verifyToken, getPublicProfile);
 
 export default router;

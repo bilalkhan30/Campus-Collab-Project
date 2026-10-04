@@ -59,7 +59,7 @@ export const loginUser = async (req, res) => {
         // Creating JWT digital wristband
         // We pack the user's role and id inside the token so we know who they are on future requests
         const token = jwt.sign(
-            {id: user.rows[0].id, role: user.rows[0].role},
+            {userId: user.rows[0].id, role: user.rows[0].role},
             process.env.JWT_SECRET,
             {expiresIn: "7d"} // Token expires in seven days
         );
