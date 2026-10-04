@@ -52,13 +52,11 @@ export const getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    // 1. Get user details
     const userResult = await pool.query(
       'SELECT id, name, email, city, contact, bio, profile_pic, resume FROM users WHERE id = $1',
       [userId]
     );
 
-    // 2. Get projects the user applied to
     const appliedResult = await pool.query(`
       SELECT a.id, a.status AS app_status, p.title, p.status AS project_status 
       FROM applications a
@@ -66,16 +64,29 @@ export const getUserProfile = async (req, res) => {
       WHERE a.applicant_id = $1
     `, [userId]);
 
-    // 3. Get projects created by the user
     const authoredResult = await pool.query(
       'SELECT id, title, status, members_required FROM projects WHERE author_id = $1',
       [userId]
     );
 
+    // --- NEW: Get applications received for the user's projects ---
+    const receivedResult = await pool.query(`
+      SELECT 
+        a.id AS app_id, a.message, a.status AS app_status,
+        u.name AS applicant_name, u.contact, u.resume,
+        p.title AS project_title
+      FROM applications a
+      JOIN users u ON a.applicant_id = u.id
+      JOIN projects p ON a.project_id = p.id
+      WHERE p.author_id = $1
+      ORDER BY a.created_at DESC
+    `, [userId]);
+
     res.status(200).json({
       user: userResult.rows[0],
       appliedProjects: appliedResult.rows,
-      authoredProjects: authoredResult.rows
+      authoredProjects: authoredResult.rows,
+      receivedApplications: receivedResult.rows // Send this to the frontend
     });
   } catch (error) {
     console.error('Error fetching profile:', error);

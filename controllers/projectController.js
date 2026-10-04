@@ -28,11 +28,11 @@ export const createProject = async (req, res) => {
 // Fetching all open to apply projects for home feed
 export const getProjects = async (req, res) => {
   try {
-    // We use a JOIN to also grab the author's name and profile pic from the users table
+
     const projects = await pool.query(`
       SELECT 
         p.id, p.title, p.description, p.members_required, p.skills, p.status, p.created_at,
-        u.name AS author_name, u.profile_pic AS author_pic
+        u.name AS author_name, u.profile_pic AS author_pic, u.city AS author_city
       FROM projects p
       JOIN users u ON p.author_id = u.id
       WHERE p.status = 'open'

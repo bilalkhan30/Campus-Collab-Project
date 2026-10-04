@@ -5,35 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | CampusCollab</title>
-    <!-- We will add CSS later, let's focus on wiring the data first -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <header>
         <h1>CampusCollab</h1>
-        <nav>
-            <a href="login.html">Login</a>
-        </nav>
+        <nav><a href="login.html">Login</a></nav>
     </header>
 
     <main>
-        <h2>Create Your Account</h2>
-        <!-- Notice we don't use the 'action' attribute. JavaScript handles the submit -->
-        <form id="registerForm">
-            <input type="text" id="name" placeholder="Full Name" required>
-            <input type="email" id="email" placeholder="College Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <input type="text" id="city" placeholder="City">
-            <input type="text" id="contact" placeholder="Contact Number">
-            <textarea id="bio" placeholder="Tell us about your skills..."></textarea>
+        <div class="form-container">
+            <h2>Create Your Account</h2>
+            <form id="registerForm">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="College Email" required autocomplete="username">
+                <input type="password" id="password" placeholder="Password" required autocomplete="new-password">
 
-            <button type="submit">Register</button>
-        </form>
-        <p id="errorMessage" style="color: red;"></p>
+                <input type="text" id="city" placeholder="City">
+                <input type="text" id="contact" placeholder="Contact Number">
+                <textarea id="bio" placeholder="Tell us about your skills..."></textarea>
+
+                <label>Profile Picture (Optional):</label>
+                <input type="file" id="profile_pic" accept="image/*">
+
+                <label>Resume PDF (Optional):</label>
+                <input type="file" id="resume" accept="application/pdf">
+
+                <button type="submit">Register</button>
+            </form>
+            <p id="errorMessage" style="color: red; text-align: center; margin-top: 1rem;"></p>
+        </div>
     </main>
-
-    <!-- Link to our JavaScript file -->
     <script src="auth.js"></script>
 </body>
 

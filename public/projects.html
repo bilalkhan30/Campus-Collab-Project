@@ -19,8 +19,26 @@
         </nav>
     </header>
 
+    <!-- public/projects.html -->
     <main>
         <h2>Available Projects</h2>
+    
+        <!-- FILTER DASHBOARD -->
+        <div
+            style="background: white; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div style="flex: 1; min-width: 200px;">
+                <label for="filterCity" style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Filter by City</label>
+                <input type="text" id="filterCity" placeholder="e.g., London, Austin..."
+                    style="width: 100%; box-sizing: border-box; margin-top: 5px;">
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+                <label for="filterSkill" style="font-size: 0.9rem; font-weight: bold; color: #64748b;">Filter by
+                    Skill</label>
+                <input type="text" id="filterSkill" placeholder="e.g., React, Node, SQL..."
+                    style="width: 100%; box-sizing: border-box; margin-top: 5px;">
+            </div>
+        </div>
+    
         <div id="projectsContainer">
             <!-- JavaScript will populate cards here -->
         </div>

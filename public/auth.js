@@ -1,49 +1,47 @@
+// public/auth.js (Replace your register logic with this)
 
 const registerForm = document.getElementById('registerForm');
 const errorMessage = document.getElementById('errorMessage');
 
-// Only run this code if we are actually on the registration page
 if (registerForm) {
   registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Stop the page from refreshing
+    e.preventDefault(); 
+    errorMessage.textContent = 'Uploading and registering... Please wait.';
+    errorMessage.style.color = 'orange';
 
-    // 1. Gather the data from the inputs
-    const userData = {
-      name: document.getElementById('name').value,
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value,
-      city: document.getElementById('city').value,
-      contact: document.getElementById('contact').value,
-      bio: document.getElementById('bio').value
-    };
+    // Use FormData for files + text
+    const formData = new FormData();
+    formData.append('name', document.getElementById('name').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('password', document.getElementById('password').value);
+    formData.append('city', document.getElementById('city').value);
+    formData.append('contact', document.getElementById('contact').value);
+    formData.append('bio', document.getElementById('bio').value);
+
+    const profilePic = document.getElementById('profile_pic').files[0];
+    if (profilePic) formData.append('profile_pic', profilePic);
+
+    const resume = document.getElementById('resume').files[0];
+    if (resume) formData.append('resume', resume);
 
     try {
-      // 2. Send the data to our Express backend
       const response = await fetch('/api/auth/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userData)
+        body: formData // NO Content-Type header! Browser sets it automatically
       });
 
       const data = await response.json();
 
-      // 3. Handle success or failure
       if (response.ok) {
-        // SUCCESS: Save the JWT token to the browser's local storage
         localStorage.setItem('token', data.token);
-        
-        // Redirect the user to the projects feed
         window.location.href = '/projects.html';
       } else {
-        // FAILED: Show the error message sent from our backend (e.g., "User already exists")
         errorMessage.textContent = data.message;
+        errorMessage.style.color = 'red';
       }
-
     } catch (error) {
-      console.error('Fetch error:', error);
-      errorMessage.textContent = 'Failed to connect to the server. Please try again.';
+      errorMessage.textContent = 'Failed to connect to the server.';
+      errorMessage.style.color = 'red';
     }
   });
 }

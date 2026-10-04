@@ -6,6 +6,7 @@ import projectRoutes from './routes/projectRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -39,6 +40,9 @@ app.use('/api/users', userRoutes);
 
 // To serve HTML, CSS and Javascript flies to the browser
 app.use(express.static('public'));
+
+// to route feedback request
+app.use('/api/feedback', feedbackRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

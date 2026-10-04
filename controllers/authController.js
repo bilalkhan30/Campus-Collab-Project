@@ -6,33 +6,42 @@ import pool from "../config/db.js";
 
 // User registration Logic
 export const registerUser = async (req, res) => {
-    try {
-        // Destructring the data from frontend
-        const {name, email, password, city, contact, bio} = req.body;
-        //Checking if the user with this email already exists
-        const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-        if(userExists.rows.length > 0) {
-            return res.status(400).json({message: "User is already registered."});
-        }
-        // Hashing the password. '10' is 'salt rounds' (how heavy the encryption is)
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        // Save the new user into the database
-        const newUser = await pool.query(
-            `INSERT INTO users (name, email, password, city, contact, bio) 
-            VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, name, email, role`,
-            [name, email, hashedPassword, city, contact, bio]
-        );
-        res.status(201).json({
-            message: "User registered successfully",
-            user: newUser.rows[0]
-        });
+  try {
+    const { name, email, password, city, contact, bio } = req.body;
 
-    } catch(error) {
-        console.log(error);
-        res.status(500).json({message: "Server error during registration"});
+    // Check if user exists
+    const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (userExists.rows.length > 0) {
+      return res.status(400).json({ message: 'User already exists' });
     }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Grab files if they were uploaded
+    const profilePicUrl = req.files?.profile_pic ? req.files.profile_pic[0].path : null;
+    const resumeUrl = req.files?.resume ? req.files.resume[0].path : null;
+
+    // Insert user with files
+    const newUser = await pool.query(
+      `INSERT INTO users (name, email, password, city, contact, bio, profile_pic, resume) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, name, email, role`,
+      [name, email, hashedPassword, city, contact, bio, profilePicUrl, resumeUrl]
+    );
+
+    const token = jwt.sign(
+      { userId: newUser.rows[0].id }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
+
+    res.status(201).json({ token, user: newUser.rows[0] });
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.status(500).json({ message: 'Server error during registration' });
+  }
 };
+
 // User login logic
 export const loginUser = async (req, res) => {
     try {

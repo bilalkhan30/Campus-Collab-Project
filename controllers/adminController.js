@@ -67,3 +67,13 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ message: 'Server error deleting user' });
   }
 };
+
+export const getAdminFeedbacks = async (req, res) => {
+  try {
+    const feedbacks = await pool.query('SELECT * FROM feedbacks ORDER BY created_at DESC');
+    res.status(200).json(feedbacks.rows);
+  } catch (error) {
+    console.error('Error fetching feedbacks:', error);
+    res.status(500).json({ message: 'Server error loading feedbacks' });
+  }
+};

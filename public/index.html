@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusCollab | Find Your Team</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for the landing page */
+        .hero {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero .btn {
+            background: white;
+            color: var(--primary);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .about {
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 3rem 2rem;
+            margin-top: 2rem;
+        }
+
+        footer form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        footer input,
+        footer textarea {
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+        }
+
+        footer button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>CampusCollab</h1>
+        <nav id="navMenu">
+            <!-- JavaScript will inject Login/Register or Profile/Logout buttons here based on auth state -->
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h2>Build Together, Succeed Together.</h2>
+        <p>The ultimate platform for college students to find teammates, collaborate on projects, and build
+            portfolio-worthy applications.</p>
+        <a href="projects.html" class="btn">Explore Projects</a>
+    </section>
+
+    <section class="about">
+        <h2>Our Vision</h2>
+        <p>Finding the right team shouldn't be the hardest part of your college project. CampusCollab bridges the gap
+            between students with ideas and students with skills. Whether you are a designer looking for a developer, or
+            a backend engineer needing a frontend wizard, you can find your match here.</p>
+    </section>
+
+    <footer>
+        <h3 style="text-align: center;">Send Feedback to Admin</h3>
+        <form id="feedbackForm">
+            <input type="text" id="fb_name" placeholder="Your Name" required>
+            <input type="email" id="fb_email" placeholder="Your Email" required>
+            <textarea id="fb_message" rows="4" placeholder="Your suggestions or issues..." required></textarea>
+            <button type="submit">Submit Feedback</button>
+        </form>
+        <p id="fb_status" style="text-align: center; margin-top: 10px;"></p>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

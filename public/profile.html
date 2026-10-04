@@ -17,38 +17,47 @@
         </nav>
     </header>
 
+    <!-- Replace your <main> section in public/profile.html with this -->
     <main>
-        <h2>Update Profile</h2>
-        <form id="profileForm">
-            <!-- Readonly email since we use it for login -->
-            <input type="email" id="email" disabled style="background: #e2e8f0;">
-            <input type="text" id="name" placeholder="Full Name" required>
-            <input type="text" id="city" placeholder="City">
-            <input type="text" id="contact" placeholder="Contact Number">
-            <textarea id="bio" placeholder="Bio"></textarea>
-
-            <label>Profile Picture:</label>
-            <input type="file" id="profile_pic" accept="image/*">
-
-            <label>Resume (PDF):</label>
-            <input type="file" id="resume" accept="application/pdf">
-
-            <button type="submit">Save Changes</button>
-            <p id="statusMessage"></p>
-        </form>
-
-        <div style="margin-top: 3rem;">
-            <h2>My Applications (Status)</h2>
-            <div id="myApplicationsContainer" style="background: white; padding: 1rem; border-radius: 8px;">
-                <!-- Javascript will inject list here -->
-            </div>
+        <!-- NEW: The Visual Profile Display -->
+        <div class="profile-card" id="profileDisplayCard">
+            <!-- JS will populate this -->
+            <p>Loading profile...</p>
         </div>
-
+    
+        <!-- The Update Form wrapped in a form-container -->
+        <div class="form-container" style="margin: 0; max-width: 100%;">
+            <h2 style="text-align: left;">Update Profile</h2>
+            <form id="profileForm">
+                <input type="email" id="email" disabled>
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="text" id="city" placeholder="City">
+                <input type="text" id="contact" placeholder="Contact Number">
+                <textarea id="bio" placeholder="Bio"></textarea>
+    
+                <label>Update Profile Picture:</label>
+                <input type="file" id="profile_pic" accept="image/*">
+    
+                <label>Update Resume (PDF):</label>
+                <input type="file" id="resume" accept="application/pdf">
+    
+                <button type="submit">Save Changes</button>
+                <p id="statusMessage"></p>
+            </form>
+        </div>
+    
+        <!-- The rest of your lists -->
+        <div style="margin-top: 3rem;">
+            <h2>Applications Received</h2>
+            <div id="receivedApplicationsContainer"></div>
+        </div>
+        <div style="margin-top: 3rem;">
+            <h2>My Applications</h2>
+            <div id="myApplicationsContainer"></div>
+        </div>
         <div style="margin-top: 3rem;">
             <h2>Projects I Created</h2>
-            <div id="myProjectsContainer" style="background: white; padding: 1rem; border-radius: 8px;">
-                <!-- Javascript will inject list here -->
-            </div>
+            <div id="myProjectsContainer"></div>
         </div>
     </main>
 
