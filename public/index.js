@@ -2,12 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
   const navMenu = document.getElementById('navMenu');
 
-  // Dynamically change header based on login status
   if (token) {
     navMenu.innerHTML = `
-      <a href="projects.html" style="color: white; margin-right: 15px;">Feed</a>
-      <a href="profile.html" style="color: white; margin-right: 15px;">Profile</a>
-      <button id="logoutBtn" style="background: transparent; border: 1px solid white;">Logout</button>
+      <a href="projects.html">Feed</a>
+      <a href="profile.html">Profile</a>
+      <button id="logoutBtn" class="btn btn-outline">Logout</button>
     `;
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
@@ -16,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   } else {
     navMenu.innerHTML = `
-      <a href="login.html" style="color: white; margin-right: 15px;">Login</a>
-      <a href="register.html" style="color: white; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 4px; text-decoration: none;">Register</a>
+      <a href="login.html">Login</a>
+      <a href="register.html" class="btn">Register</a>
     `;
   }
 });
