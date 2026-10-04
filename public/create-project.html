@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Project | CampusCollab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>CampusCollab</h1>
+        <nav>
+            <a href="projects.html" style="color: white; margin-right: 1rem;">Back to Feed</a>
+            <button id="logoutBtn">Logout</button>
+        </nav>
+    </header>
+
+    <main>
+        <h2 style="text-align: center;">Post a New Project</h2>
+        <form id="createProjectForm">
+            <input type="text" id="title" placeholder="Project Title" required>
+
+            <textarea id="description" rows="5" placeholder="Describe the project and goals..." required></textarea>
+
+            <label for="members_required" style="font-size: 0.9rem; margin-bottom: -0.5rem;">Members Needed:</label>
+            <input type="number" id="members_required" min="1" max="20" placeholder="e.g., 3" required>
+
+            <label for="skills" style="font-size: 0.9rem; margin-bottom: -0.5rem;">Required Skills (Comma
+                separated):</label>
+            <input type="text" id="skills" placeholder="e.g., React, Node.js, PostgreSQL" required>
+
+            <button type="submit">Create Project</button>
+        </form>
+        <p id="statusMessage" style="text-align: center; margin-top: 1rem;"></p>
+    </main>
+
+    <script src="create-project.js"></script>
+</body>
+
+</html>

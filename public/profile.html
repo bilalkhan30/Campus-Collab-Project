@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | CampusCollab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>CampusCollab</h1>
+        <nav>
+            <a href="projects.html" style="color: white; margin-right: 1rem;">Back to Feed</a>
+            <button id="logoutBtn">Logout</button>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Update Profile</h2>
+        <form id="profileForm">
+            <!-- Readonly email since we use it for login -->
+            <input type="email" id="email" disabled style="background: #e2e8f0;">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="text" id="city" placeholder="City">
+            <input type="text" id="contact" placeholder="Contact Number">
+            <textarea id="bio" placeholder="Bio"></textarea>
+
+            <label>Profile Picture:</label>
+            <input type="file" id="profile_pic" accept="image/*">
+
+            <label>Resume (PDF):</label>
+            <input type="file" id="resume" accept="application/pdf">
+
+            <button type="submit">Save Changes</button>
+            <p id="statusMessage"></p>
+        </form>
+
+        <div style="margin-top: 3rem;">
+            <h2>My Applications (Status)</h2>
+            <div id="myApplicationsContainer" style="background: white; padding: 1rem; border-radius: 8px;">
+                <!-- Javascript will inject list here -->
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem;">
+            <h2>Projects I Created</h2>
+            <div id="myProjectsContainer" style="background: white; padding: 1rem; border-radius: 8px;">
+                <!-- Javascript will inject list here -->
+            </div>
+        </div>
+    </main>
+
+    <script src="profile.js"></script>
+</body>
+
+</html>

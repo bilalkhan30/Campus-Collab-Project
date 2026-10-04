@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | CampusCollab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>CampusCollab</h1>
+        <nav><a href="register.html" style="color: white;">Register</a></nav>
+    </header>
+
+    <main>
+        <h2 style="text-align: center;">Welcome Back</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="College Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="errorMessage" style="color: red; text-align: center;"></p>
+    </main>
+
+    <script src="auth.js"></script>
+</body>
+
+</html>
