@@ -227,6 +227,4 @@ http://localhost:5000
 ## Author
 
 **Bilal Khan**  
-* **GitHub:** [@bilalkhan30](https://github.com/bilalkhan30)  
 * **Email:** [bilalkhan991150@gmail.com](mailto:bilalkhan991150@gmail.com)  
-* **Institution:** Maharaja Surajmal Institute of Technology (GGSIPU), New Delhi
